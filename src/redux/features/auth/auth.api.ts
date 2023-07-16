@@ -6,9 +6,9 @@ import { ILogin, ISignUp } from './auth.interface';
 import { userLoggedIn } from './auth.slice';
 
 const authApi = apiSlice.injectEndpoints({
-  endpoints: builder => ({
+  endpoints: (builder) => ({
     signUp: builder.mutation<BR<any>, ISignUp>({
-      query: data => ({
+      query: (data) => ({
         url: `/auth/signup`,
         method: 'POST',
         body: data,
@@ -17,7 +17,7 @@ const authApi = apiSlice.injectEndpoints({
         baseQueryReturnValue.data.message,
     }),
     login: builder.mutation<BR<{ accessToken: string; user: IUser }>, ILogin>({
-      query: data => ({
+      query: (data) => ({
         url: `/auth/login`,
         method: 'POST',
         body: data,
@@ -33,7 +33,9 @@ const authApi = apiSlice.injectEndpoints({
             setUser({
               id: result.data.data.user.id,
               email: result.data.data.user.email,
-            }),
+              wishList: result.data.data.user.wishList! || null,
+              readingPlans: result.data.data.user.readingPlans!,
+            })
           );
         } catch (error) {
           console.log(error);
