@@ -1,4 +1,4 @@
-import { useAppSelector } from '@/redux/hook';
+import { useAuth } from '@/hooks/useAuth';
 import { ReactNode } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
 
@@ -7,17 +7,15 @@ interface IProps {
 }
 
 export default function PrivateRoute({ children }: IProps) {
-  const { user, isLoading } = useAppSelector((state) => state.user);
+  const isLoggedIn = useAuth();
 
-  const { pathname } = useLocation();
+  const location = useLocation();
 
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
+  console.log({ location });
 
-  if (!user.email && !isLoading) {
-    return <Navigate to="/login" state={{ path: pathname }} />;
-  }
-
-  return children;
+  return !isLoggedIn ? (
+    <Navigate to="/login" state={{ from: location }} />
+  ) : (
+    children
+  );
 }

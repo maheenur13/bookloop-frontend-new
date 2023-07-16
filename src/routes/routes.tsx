@@ -1,49 +1,48 @@
-import { createBrowserRouter } from 'react-router-dom';
-import App from '@/App';
+
+import Books from '@/components/Books';
+import { MainLayout } from '@/components/layouts/MainLayout';
+import Home from '@/pages/Home';
 import Login from '@/pages/Login';
 import NotFound from '@/pages/NotFound';
-import Home from '@/pages/Home';
-import Products from '@/pages/Products';
-
-import Checkout from '@/pages/Checkout';
 import Signup from '@/pages/Signup';
-import ProductDetails from '@/pages/ProductDetails';
+import { createBrowserRouter } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
+import { BookDetails } from '@/pages/BookDetails';
 
 const routes = createBrowserRouter([
   {
     path: '/',
-    element: <App />,
-    children: [
-      {
-        index: true,
-        element: <Home />,
-      },
-      {
-        path: '/products',
-        element: <Products />,
-      },
-      {
-        path: '/product-details/:id',
-        element: <ProductDetails />,
-      },
-      {
-        path: '/checkout',
-        element: (
-          <PrivateRoute>
-            <Checkout />,
-          </PrivateRoute>
-        ),
-      },
-    ],
+    element: (
+      <MainLayout>
+        <Home />
+      </MainLayout>
+    ),
   },
   {
     path: '/login',
     element: <Login />,
   },
   {
-    path: '/signup',
+    path: '/sign-up',
     element: <Signup />,
+  },
+  {
+    path: '/book/details/:id',
+    element: (
+      <MainLayout>
+        <BookDetails />
+      </MainLayout>
+    ),
+  },
+  {
+    path: '/all-books',
+    element: (
+      <MainLayout>
+        <PrivateRoute>
+          <Books />
+        </PrivateRoute>
+      </MainLayout>
+    ),
   },
   {
     path: '*',
