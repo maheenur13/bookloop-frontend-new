@@ -1,13 +1,14 @@
-
 import Books from '@/components/Books';
 import { MainLayout } from '@/components/layouts/MainLayout';
+import { AddBook } from '@/pages/AddBook';
+import { BookDetails } from '@/pages/BookDetails';
+import { EditBook } from '@/pages/EditBook';
 import Home from '@/pages/Home';
 import Login from '@/pages/Login';
 import NotFound from '@/pages/NotFound';
 import Signup from '@/pages/Signup';
 import { createBrowserRouter } from 'react-router-dom';
 import PrivateRoute from './PrivateRoute';
-import { BookDetails } from '@/pages/BookDetails';
 
 const routes = createBrowserRouter([
   {
@@ -21,6 +22,22 @@ const routes = createBrowserRouter([
   {
     path: '/login',
     element: <Login />,
+  },
+  {
+    path: '/add-book',
+    element: (
+      <MainLayout>
+        <AddBook />
+      </MainLayout>
+    ),
+  },
+  {
+    path: '/book/edit/:id',
+    element: (
+      <MainLayout>
+        <EditBook />
+      </MainLayout>
+    ),
   },
   {
     path: '/sign-up',

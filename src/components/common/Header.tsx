@@ -8,7 +8,7 @@ export const Header: FC = () => {
   const dispatch = useAppDispatch();
   const {
     user: { email },
-  } = useAppSelector(state => state.user);
+  } = useAppSelector((state) => state.user);
 
   const handleLogout = () => {
     dispatch(removeUser());
@@ -21,7 +21,7 @@ export const Header: FC = () => {
       <div className="h-full w-full bg-white/60">
         <div className="flex items-center justify-between w-full md:max-w-7xl h-full mx-auto ">
           <div>
-            <h6>BOOK LOOP</h6>
+            <h6 className="text-2xl font-bold">BOOK LOOP</h6>
           </div>
           <div>
             <ul className="flex items-center">
@@ -34,6 +34,15 @@ export const Header: FC = () => {
               <li className="p-3">WishList</li>
               {email && (
                 <>
+                  <li className="p-3">
+                    <Link
+                      to="/add-book"
+                      // onClick={handleLogout}
+                      className="flex w-full justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-blue-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    >
+                      + Add Book
+                    </Link>
+                  </li>
                   <li className="p-3">
                     <button
                       onClick={handleLogout}

@@ -7,7 +7,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:5000/api/v1',
+    baseUrl: `${import.meta.env.VITE_API_URL}/api/v1`,
     // eslint-disable-next-line @typescript-eslint/require-await
     prepareHeaders: async (headers, { getState }) => {
       const currentState: any = getState();
@@ -18,6 +18,6 @@ export const apiSlice = createApi({
       return headers;
     },
   }),
-  tagTypes: ['comments'],
+  tagTypes: ['comments','book','review'],
   endpoints: () => ({}),
 });
