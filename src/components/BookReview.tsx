@@ -1,5 +1,6 @@
 import { IReview } from '@/interfaces';
 import { useAddReviewMutation } from '@/redux/features/book/book.api';
+import { useAppSelector } from '@/redux/hook';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { FiSend } from 'react-icons/fi';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
@@ -12,6 +13,9 @@ interface IProps {
 }
 
 export default function BookReview({ id, reviewData }: IProps) {
+  const {
+    user: { email },
+  } = useAppSelector((state) => state.user);
   const [inputValue, setInputValue] = useState<string>('');
 
   //   const { data } = useGetCommentQuery(id, {
@@ -46,6 +50,7 @@ export default function BookReview({ id, reviewData }: IProps) {
           value={inputValue}
         />
         <Button
+          disabled={!email}
           type="submit"
           className="rounded-full h-10 w-10 p-2 text-[25px]"
         >
