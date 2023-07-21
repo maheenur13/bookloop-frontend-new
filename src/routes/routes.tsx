@@ -35,7 +35,9 @@ const routes = createBrowserRouter([
     path: '/book/edit/:id',
     element: (
       <MainLayout>
-        <EditBook />
+        <PrivateRoute>
+          <EditBook />
+        </PrivateRoute>
       </MainLayout>
     ),
   },
@@ -55,9 +57,9 @@ const routes = createBrowserRouter([
     path: '/all-books',
     element: (
       <MainLayout>
-        <PrivateRoute>
-          <Books />
-        </PrivateRoute>
+        {/* <PrivateRoute> */}
+        <Books />
+        {/* </PrivateRoute> */}
       </MainLayout>
     ),
   },
