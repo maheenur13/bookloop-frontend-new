@@ -1,5 +1,8 @@
-import { useAppDispatch, useAppSelector } from '@/redux/hook';
+import { IBook } from '@/interfaces';
+import { useGetWishListQuery } from '@/redux/features/wishList/wishList.api';
+import { useAppDispatch } from '@/redux/hook';
 import { Heart } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { Button } from './ui/button';
 import {
   Sheet,
@@ -10,11 +13,17 @@ import {
 } from './ui/sheet';
 
 export default function WishList() {
-  const {
-    user: { wishList },
-  } = useAppSelector((state) => state.user);
+  const [wishList, setWishList] = useState<IBook[]>([]);
+  const { data } = useGetWishListQuery(undefined);
+
   //   const { products, total } = useAppSelector((state) => state.cart);
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (data) {
+      setWishList(data.data.books);
+    }
+  }, [data]);
 
   return (
     <Sheet>

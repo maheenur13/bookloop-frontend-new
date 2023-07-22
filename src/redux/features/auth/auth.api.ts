@@ -25,7 +25,6 @@ const authApi = apiSlice.injectEndpoints({
       async onQueryStarted(_arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
-          console.log(result);
 
           localStorage.setItem('auth', JSON.stringify(result.data.data));
           dispatch(userLoggedIn(result.data.data.accessToken));

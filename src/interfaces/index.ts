@@ -27,4 +27,7 @@ export type IBook = {
   publicationYear: number;
 };
 
-export type IWishList = IBook;
+export type IWishList = {
+  id: string;
+  wishList: IBook[];
+};

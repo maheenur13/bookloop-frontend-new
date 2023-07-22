@@ -8,6 +8,10 @@ import {
   useDeleteBookMutation,
   useSingleBookQuery,
 } from '@/redux/features/book/book.api';
+import {
+  useAddToWishListMutation,
+  useGetWishListQuery,
+} from '@/redux/features/wishList/wishList.api';
 import { useAppSelector } from '@/redux/hook';
 import { Tooltip } from 'antd';
 import { CheckCheckIcon, Heart } from 'lucide-react';
@@ -20,8 +24,13 @@ export const BookDetails: FC = () => {
   const {
     user: { email },
   } = useAppSelector((state) => state.user);
+  const [allWishList, setAllWishList] = useState<IBook[]>();
   const [bookData, setBoookData] = useState<IBook>();
   const [isAlertShow, setIsAlertShow] = useState(false);
+
+  const { data: wishListData } = useGetWishListQuery(undefined);
+
+  const [addToWishList] = useAddToWishListMutation();
 
   const { data } = useSingleBookQuery(search?.id as string);
   const [deleteBook, { isSuccess }] = useDeleteBookMutation();
@@ -32,6 +41,21 @@ export const BookDetails: FC = () => {
   const handleDeleteBook = (id: string) => {
     deleteBook(id);
   };
+
+  const handleAddToReadingList = () => {
+    //
+  };
+  const handleAddToWishList = () => {
+    if (bookData) {
+      addToWishList({ book: bookData._id! });
+    }
+  };
+
+  useEffect(() => {
+    if (wishListData) {
+      setAllWishList(wishListData?.data?.books);
+    }
+  }, [wishListData]);
   useEffect(() => {
     if (data?.data) {
       setBoookData(data?.data);
@@ -50,14 +74,36 @@ export const BookDetails: FC = () => {
         <div className="flex justify-between">
           <h2 className="text-2xl font-bold text-gray-900">Book Details</h2>
           <div className="flex">
-            <Tooltip title="Add to Reading List">
-              <Button variant="ghost">
+            <Tooltip title={'Add to Reading List'}>
+              <Button onClick={handleAddToReadingList} variant="ghost">
                 <CheckCheckIcon size="25" />
               </Button>
             </Tooltip>
-            <Tooltip title="Add to Wish List">
-              <Button variant="ghost">
-                <Heart size="25" />
+            <Tooltip
+              title={
+                !allWishList?.find((book: IBook) => book?._id === bookData?._id)
+                  ? 'Add to Wish List'
+                  : 'Remove From Wish List'
+              }
+            >
+              <Button onClick={handleAddToWishList} variant="ghost">
+                <Heart
+                  size="25"
+                  fill={
+                    allWishList?.find(
+                      (book: IBook) => book?._id === bookData?._id
+                    )
+                      ? 'red'
+                      : 'white'
+                  }
+                  color={
+                    allWishList?.find(
+                      (book: IBook) => book?._id === bookData?._id
+                    )
+                      ? 'red'
+                      : 'black'
+                  }
+                />
               </Button>
             </Tooltip>
 
