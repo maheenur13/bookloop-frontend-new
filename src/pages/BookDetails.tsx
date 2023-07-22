@@ -2,12 +2,15 @@
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import BookReview from '@/components/BookReview';
+import { Button } from '@/components/ui/button';
 import { IBook } from '@/interfaces';
 import {
   useDeleteBookMutation,
   useSingleBookQuery,
 } from '@/redux/features/book/book.api';
 import { useAppSelector } from '@/redux/hook';
+import { Tooltip } from 'antd';
+import { CheckCheckIcon, Heart } from 'lucide-react';
 import { FC, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
@@ -47,6 +50,17 @@ export const BookDetails: FC = () => {
         <div className="flex justify-between">
           <h2 className="text-2xl font-bold text-gray-900">Book Details</h2>
           <div className="flex">
+            <Tooltip title="Add to Reading List">
+              <Button variant="ghost">
+                <CheckCheckIcon size="25" />
+              </Button>
+            </Tooltip>
+            <Tooltip title="Add to Wish List">
+              <Button variant="ghost">
+                <Heart size="25" />
+              </Button>
+            </Tooltip>
+
             <Link
               to={`/book/edit/${bookData?._id}`}
               className="flex mx-2 justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
