@@ -26,7 +26,6 @@ export default function BookReview({ id, reviewData }: IProps) {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(inputValue);
 
     const options = {
       id: id,
@@ -45,7 +44,8 @@ export default function BookReview({ id, reviewData }: IProps) {
     <div className="max-w-7xl mx-auto mt-5">
       <form className="flex gap-5 items-center" onSubmit={handleSubmit}>
         <Textarea
-          className="min-h-[30px]"
+          required
+          className="min-h-[30px] bg-white"
           onChange={handleChange}
           value={inputValue}
         />
