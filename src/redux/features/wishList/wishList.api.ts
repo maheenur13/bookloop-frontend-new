@@ -1,12 +1,26 @@
 import { IBook } from '@/interfaces';
 import { BR } from '@/redux/api/api.interface';
 import { apiSlice } from '@/redux/api/api.slice';
+import { setWishList } from './wishList.slice';
 
 const wishListApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getWishList: builder.query<BR<IBook[]>, undefined>({
+    getWishList: builder.query<BR<{ id: string; books: IBook[] }>, undefined>({
       query: () => '/wish-list',
-      //   providesTags: ['book'],
+      providesTags: ['wishList'],
+      async onQueryStarted(_arg, { queryFulfilled, dispatch }) {
+        try {
+          const result = await queryFulfilled;
+          dispatch(
+            setWishList({
+              id: result.data.data.id,
+              wishList: result.data.data.books,
+            })
+          );
+        } catch (error) {
+          console.log(error);
+        }
+      },
     }),
     addToWishList: builder.mutation({
       query: (data) => ({
@@ -14,7 +28,7 @@ const wishListApi = apiSlice.injectEndpoints({
         method: 'POST',
         body: data,
       }),
-      //   invalidatesTags: ['book'],
+      invalidatesTags: ['wishList'],
     }),
     deleteFromWishList: builder.mutation({
       query: (id) => ({
