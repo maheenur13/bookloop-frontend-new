@@ -60,7 +60,7 @@ const routes = createBrowserRouter([
     element: (
       <MainLayout>
         {/* <PrivateRoute> */}
-        <Books />
+        <Books page="all-books" />
         {/* </PrivateRoute> */}
       </MainLayout>
     ),
