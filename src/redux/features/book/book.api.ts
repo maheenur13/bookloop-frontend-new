@@ -10,7 +10,7 @@ const bookApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getBooks: builder.query<BR<IBook[]>, string | undefined>({
       query: (query) => (query ? `/books${query}` : '/books'),
-      providesTags: ['book'],
+
       async onQueryStarted(_arg, { queryFulfilled, dispatch }) {
         try {
           const result = await queryFulfilled;
@@ -25,6 +25,7 @@ const bookApi = apiSlice.injectEndpoints({
           console.log(error);
         }
       },
+      providesTags: ['book'],
     }),
     addBook: builder.mutation({
       query: (data) => ({

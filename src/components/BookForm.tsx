@@ -4,9 +4,9 @@ import {
   useEditBookMutation,
   useSingleBookQuery,
 } from '@/redux/features/book/book.api';
+import { notification } from 'antd';
 import { FC, FormEvent, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Toaster } from './ui/Toaster';
 
 const formInititalValue: Partial<IBook> = {
   title: '',
@@ -28,8 +28,20 @@ export const BookForm: FC<PropsType> = ({ mode }) => {
 
   const [formData, setFormData] = useState<Partial<IBook>>(formInititalValue);
 
-  const [addBook] = useAddBookMutation();
+  const [addBook, { isSuccess: isAdded }] = useAddBookMutation();
   const [editBook, { isSuccess: editSuccess }] = useEditBookMutation();
+
+  const [api, contextHolder] = notification.useNotification();
+
+  const openNotification = (type: 'upload' | 'edit') => {
+    api.open({
+      message: 'Successful!',
+      description:
+        type == 'upload'
+          ? 'Book added successfully!'
+          : 'Book edited successfully!',
+    });
+  };
 
   useEffect(() => {
     if (data?.data && mode === 'edit') {
@@ -54,15 +66,21 @@ export const BookForm: FC<PropsType> = ({ mode }) => {
     setFormData(formInititalValue);
   };
 
-  let alert = null;
+  useEffect(() => {
+    if (isAdded) {
+      openNotification('upload');
+    }
+  }, [isAdded]);
+  useEffect(() => {
+    if (editSuccess) {
+      openNotification('edit');
+    }
+  }, [editSuccess]);
 
-  if (editSuccess) {
-    alert = <Toaster />;
-  }
   return (
     <>
+      {contextHolder}
       <form onSubmit={sumbitBook}>
-        {alert}
         <div className="space-y-12">
           <div className="border-b border-gray-900/10 pb-12">
             <h2 className="text-base font-semibold leading-7 text-gray-900">
