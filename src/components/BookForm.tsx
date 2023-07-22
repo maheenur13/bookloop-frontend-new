@@ -22,7 +22,9 @@ type PropsType = {
 export const BookForm: FC<PropsType> = ({ mode }) => {
   const search = useParams();
 
-  const { data } = useSingleBookQuery(search?.id as string);
+  const { data } = useSingleBookQuery(search?.id as string, {
+    skip: mode !== 'edit',
+  });
 
   const [formData, setFormData] = useState<Partial<IBook>>(formInititalValue);
 

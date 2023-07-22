@@ -2,16 +2,18 @@ import { configureStore } from '@reduxjs/toolkit';
 import { apiSlice } from './api/api.slice';
 import authReducer from './features/auth/auth.slice';
 import bookReducer from './features/book/book.slice';
+import searchAndFilterReducer from './features/searchAndFilter/searchAndFilter.slice';
 import userReducer from './features/user/user.slice';
 
 const store = configureStore({
   reducer: {
     books: bookReducer,
     user: userReducer,
+    searchFilter: searchAndFilterReducer,
     auth: authReducer,
     [apiSlice.reducerPath]: apiSlice.reducer,
   },
-  middleware: getDefaultMiddleware =>
+  middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(apiSlice.middleware),
 });
 

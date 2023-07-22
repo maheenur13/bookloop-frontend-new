@@ -27,7 +27,9 @@ const routes = createBrowserRouter([
     path: '/add-book',
     element: (
       <MainLayout>
-        <AddBook />
+        <PrivateRoute>
+          <AddBook />
+        </PrivateRoute>
       </MainLayout>
     ),
   },

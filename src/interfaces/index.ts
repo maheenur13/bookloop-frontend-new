@@ -24,6 +24,7 @@ export type IBook = {
   publicationDate: string;
   reviews: IReview[];
   uploadedBy: IUser;
+  publicationYear: number;
 };
 
 export type IWishList = IBook;

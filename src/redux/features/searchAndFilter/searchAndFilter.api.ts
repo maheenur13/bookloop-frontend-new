@@ -6,7 +6,7 @@ const searchAndFilterApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     searchBook: builder.query<BR<IBook[]>, string>({
       query: (value: string) => `/books?searchTerm=${value}`,
-      providesTags: ['book'],
+      // providesTags: ['book'],
     }),
 
     filterBook: builder.query<
@@ -15,7 +15,7 @@ const searchAndFilterApi = apiSlice.injectEndpoints({
     >({
       query: (data: { genre: string; publicationYear: number }) =>
         `/books?genre=${data.genre}&publicationYear=${data.publicationYear}`,
-      providesTags: ['book'],
+      // providesTags: ['book'],
     }),
     // getReview: builder.query({
     //   query: (id: string) => `/books/review/${id}`,

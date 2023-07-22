@@ -1,14 +1,87 @@
+import { useDebounce } from '@/hooks/useDebounce';
+import { IBook } from '@/interfaces';
 import { useGetBooksQuery } from '@/redux/features/book/book.api';
-import { FC } from 'react';
+import { useAppSelector } from '@/redux/hook';
+import { Input, Select } from 'antd';
+import { ChangeEvent, FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+type IQueryType = {
+  genre: string;
+  publicationYear: string;
+  searchTerm: string;
+};
+
 const Books: FC = () => {
-  const { data, isLoading, isError, error } = useGetBooksQuery(undefined);
+  // const [searchTerm, setSearchTerm] = useState<string>('');
+
+  const [query, setQuery] = useState<string>();
+  const [queryItems, setQueryItems] = useState<IQueryType>({
+    genre: '',
+    publicationYear: '',
+    searchTerm: '',
+  });
+  const [value, setValue] = useState<string>('');
+  const debouncedValue = useDebounce<string>(value, 500);
+  const { data, isLoading, isError, error, refetch } = useGetBooksQuery(query);
+
+  const { allGenre, allPublicationYears } = useAppSelector(
+    (state) => state.searchFilter
+  );
   const navigate = useNavigate();
+  const [allBooks, setAllBooks] = useState<IBook[]>([]);
 
   const handleBookClick = (id: string) => {
     navigate(`/book/details/${id}`);
   };
+
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setValue(event.target.value);
+  };
+
+  const handleGenreChange = (e: any) => {
+    setQueryItems((prevState) => ({ ...prevState, genre: e ? e : '' }));
+  };
+  const handleYearChange = (e: any) => {
+    console.log(e);
+
+    setQueryItems((prevState) => ({
+      ...prevState,
+      publicationYear: String(e ? e : ''),
+    }));
+  };
+
+  useEffect(() => {
+    setQueryItems((prevState) => ({
+      ...prevState,
+      searchTerm: debouncedValue,
+    }));
+  }, [debouncedValue]);
+
+  const generateQueryString = (queryItems: IQueryType) => {
+    const queryArray = Object.entries(queryItems)
+      .filter(([key, value]) => value.length > 0) // Filter out empty values
+      .map(([key, value]) => `${key}=${encodeURIComponent(value)}`); // Encode values to handle special characters
+
+    setQuery('?' + queryArray.join('&'));
+  };
+
+  useEffect(() => {
+    generateQueryString(queryItems);
+  }, [queryItems]);
+
+  useEffect(() => {
+    if (query?.length) {
+      refetch();
+    }
+  }, [query]);
+  console.log({ query });
+
+  useEffect(() => {
+    if (data?.data) {
+      setAllBooks(data?.data);
+    }
+  }, [data]);
 
   let content = null;
   if (isLoading && !isError) {
@@ -18,7 +91,7 @@ const Books: FC = () => {
   } else if (!isLoading && !isError && data?.data) {
     content = (
       <>
-        {data.data.map(book => (
+        {allBooks.map((book) => (
           <div
             key={book.title}
             onClick={() => handleBookClick(book._id)}
@@ -59,10 +132,51 @@ const Books: FC = () => {
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-2xl py-16 sm:py-24 lg:max-w-none lg:py-32">
+        <div className="text-end flex justify-between">
+          <div>
+            <p className="text-sm mb-2 text-gray-500">
+              Search By Title, author or genre
+            </p>
+            <Input
+              onChange={handleChange}
+              placeholder={'title, author or genre'}
+            />
+          </div>
+          <div>
+            <p className="text-sm mb-2 text-gray-500">
+              Filter By Genre and Publication Year
+            </p>
+            <Select
+              allowClear
+              className="mr-2"
+              style={{ width: 160 }}
+              placeholder="Filter By Genre"
+              onChange={handleGenreChange}
+              options={[...allGenre].map((genre) => {
+                return {
+                  value: genre,
+                  label: genre,
+                };
+              })}
+            />
+            <Select
+              allowClear
+              placeholder="Filter By Publication year"
+              style={{ width: 160 }}
+              onChange={handleYearChange}
+              options={[...allPublicationYears].map((year) => {
+                return {
+                  value: year,
+                  label: year,
+                };
+              })}
+            />
+          </div>
+        </div>
         <h2 className="text-2xl font-bold text-gray-900">Books</h2>
 
         <div className="mt-6 space-y-12 lg:grid lg:grid-cols-3 lg:gap-x-6 lg:space-y-0">
-          {content}
+          {allBooks?.length > 0 ? content : <p>No book found</p>}
         </div>
       </div>
     </div>
