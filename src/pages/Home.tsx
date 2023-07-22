@@ -3,7 +3,7 @@ import Books from '@/components/Books';
 export default function Home() {
   return (
     <>
-      <Books />
+      <Books dataShow={10} page="home" />
     </>
   );
 }
