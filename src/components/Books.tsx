@@ -11,8 +11,12 @@ type IQueryType = {
   publicationYear: string;
   searchTerm: string;
 };
+type PropsType = {
+  dataShow?: number;
+  page: string;
+};
 
-const Books: FC = () => {
+const Books: FC<PropsType> = ({ dataShow, page }) => {
   // const [searchTerm, setSearchTerm] = useState<string>('');
 
   const [query, setQuery] = useState<string>();
@@ -91,7 +95,7 @@ const Books: FC = () => {
   } else if (!isLoading && !isError && data?.data) {
     content = (
       <>
-        {allBooks.map((book) => (
+        {[...allBooks].slice(0, dataShow).map((book) => (
           <div
             key={book.title}
             onClick={() => handleBookClick(book._id)}
@@ -132,48 +136,52 @@ const Books: FC = () => {
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-2xl py-16 sm:py-24 lg:max-w-none lg:py-32">
-        <div className="text-end flex justify-between">
-          <div>
-            <p className="text-sm mb-2 text-gray-500">
-              Search By Title, author or genre
-            </p>
-            <Input
-              onChange={handleChange}
-              placeholder={'title, author or genre'}
-            />
+        {page !== 'home' && (
+          <div className="text-end flex justify-between">
+            <div>
+              <p className="text-sm mb-2 text-gray-500">
+                Search By Title, author or genre
+              </p>
+              <Input
+                onChange={handleChange}
+                placeholder={'title, author or genre'}
+              />
+            </div>
+            <div>
+              <p className="text-sm mb-2 text-gray-500">
+                Filter By Genre and Publication Year
+              </p>
+              <Select
+                allowClear
+                className="mr-2"
+                style={{ width: 160 }}
+                placeholder="Filter By Genre"
+                onChange={handleGenreChange}
+                options={[...allGenre].map((genre) => {
+                  return {
+                    value: genre,
+                    label: genre,
+                  };
+                })}
+              />
+              <Select
+                allowClear
+                placeholder="Filter By Publication year"
+                style={{ width: 160 }}
+                onChange={handleYearChange}
+                options={[...allPublicationYears].map((year) => {
+                  return {
+                    value: year,
+                    label: year,
+                  };
+                })}
+              />
+            </div>
           </div>
-          <div>
-            <p className="text-sm mb-2 text-gray-500">
-              Filter By Genre and Publication Year
-            </p>
-            <Select
-              allowClear
-              className="mr-2"
-              style={{ width: 160 }}
-              placeholder="Filter By Genre"
-              onChange={handleGenreChange}
-              options={[...allGenre].map((genre) => {
-                return {
-                  value: genre,
-                  label: genre,
-                };
-              })}
-            />
-            <Select
-              allowClear
-              placeholder="Filter By Publication year"
-              style={{ width: 160 }}
-              onChange={handleYearChange}
-              options={[...allPublicationYears].map((year) => {
-                return {
-                  value: year,
-                  label: year,
-                };
-              })}
-            />
-          </div>
-        </div>
-        <h2 className="text-2xl font-bold text-gray-900">Books</h2>
+        )}
+        <h2 className="text-2xl font-bold text-gray-900 mt-2">
+          {page === 'home' ? 'Books' : 'All Books'}
+        </h2>
 
         <div className="mt-6 space-y-12 lg:grid lg:grid-cols-3 lg:gap-x-6 lg:space-y-0">
           {allBooks?.length > 0 ? content : <p>No book found</p>}
