@@ -182,7 +182,7 @@ const Books: FC<PropsType> = ({ dataShow, page }) => {
         </h2>
 
         <div className="mt-6 space-y-12 lg:grid lg:grid-cols-3 lg:gap-x-6 lg:space-y-0">
-          {allBooks?.length > 0 ? content : <p>No book found</p>}
+          {content}
         </div>
       </div>
     </div>
