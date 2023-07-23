@@ -26,8 +26,8 @@ export default function WishList() {
   };
 
   useEffect(() => {
-    if (data) {
-      setWishList(data.data.books);
+    if (data?.data) {
+      setWishList(data?.data?.books);
     }
   }, [data]);
 

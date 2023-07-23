@@ -80,7 +80,7 @@ const Books: FC<PropsType> = ({ dataShow, page }) => {
   }, [query]);
 
   useEffect(() => {
-    if (data?.data) {
+    if (data) {
       setAllBooks(data?.data);
     }
   }, [data]);
@@ -93,7 +93,7 @@ const Books: FC<PropsType> = ({ dataShow, page }) => {
   } else if (!isLoading && !isError && data?.data) {
     content = (
       <>
-        {[...allBooks].slice(0, dataShow).map((book) => (
+        {[...allBooks]?.slice(0, dataShow).map((book) => (
           <div
             key={book.title}
             onClick={() => handleBookClick(book._id)}

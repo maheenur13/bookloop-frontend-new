@@ -32,8 +32,6 @@ const authApi = apiSlice.injectEndpoints({
             setUser({
               id: result.data.data.user.id,
               email: result.data.data.user.email,
-              wishList: result.data.data.user.wishList! || null,
-              readingPlans: result.data.data.user.readingPlans!,
             })
           );
         } catch (error) {

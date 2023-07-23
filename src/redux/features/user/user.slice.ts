@@ -1,4 +1,3 @@
-import { IReadingPlans, IWishList } from '@/interfaces';
 import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 // import {
@@ -10,8 +9,6 @@ interface IUserState {
   user: {
     id: string | null;
     email: string | null;
-    readingPlans: IReadingPlans[] | [];
-    wishList: IWishList[] | [];
   };
 }
 
@@ -19,8 +16,6 @@ const initialState: IUserState = {
   user: {
     id: null,
     email: null,
-    wishList: [],
-    readingPlans: [],
   },
 };
 
@@ -35,8 +30,6 @@ const userSlice = createSlice({
       state.user = {
         email: null,
         id: null,
-        wishList: [],
-        readingPlans: [],
       };
     },
   },
