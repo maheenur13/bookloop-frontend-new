@@ -38,7 +38,7 @@ export default function ReadingList() {
 
   useEffect(() => {
     if (readingPlanData) {
-      setAllRedingPlans(readingPlanData.data);
+      setAllRedingPlans(readingPlanData?.data);
     }
   }, [readingPlanData]);
 
