@@ -9,12 +9,16 @@ import {
   useSingleBookQuery,
 } from '@/redux/features/book/book.api';
 import {
+  useAddToReadingPlanMutation,
+  useGetReadingPlansQuery,
+} from '@/redux/features/readingPlan/readingPlan.api';
+import {
   useAddToWishListMutation,
   useGetWishListQuery,
 } from '@/redux/features/wishList/wishList.api';
 import { useAppSelector } from '@/redux/hook';
 import { Tooltip } from 'antd';
-import { CheckCheckIcon, Heart } from 'lucide-react';
+import { BookMarked, Heart } from 'lucide-react';
 import { FC, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
@@ -25,12 +29,20 @@ export const BookDetails: FC = () => {
     user: { email },
   } = useAppSelector((state) => state.user);
   const [allWishList, setAllWishList] = useState<IBook[]>();
+  const [allReadingPlans, setAllRedingPlans] = useState<{
+    books: {
+      book: IBook;
+      status: 'complete' | 'in-complete';
+    }[];
+  }>();
   const [bookData, setBoookData] = useState<IBook>();
   const [isAlertShow, setIsAlertShow] = useState(false);
 
   const { data: wishListData } = useGetWishListQuery(undefined);
+  const { data: readingPlanData } = useGetReadingPlansQuery(undefined);
 
   const [addToWishList] = useAddToWishListMutation();
+  const [addToReadingPlan] = useAddToReadingPlanMutation();
 
   const { data } = useSingleBookQuery(search?.id as string);
   const [deleteBook, { isSuccess }] = useDeleteBookMutation();
@@ -43,7 +55,7 @@ export const BookDetails: FC = () => {
   };
 
   const handleAddToReadingList = () => {
-    //
+    addToReadingPlan({ book: bookData?._id });
   };
   const handleAddToWishList = () => {
     if (bookData) {
@@ -57,6 +69,11 @@ export const BookDetails: FC = () => {
     }
   }, [wishListData]);
   useEffect(() => {
+    if (readingPlanData) {
+      setAllRedingPlans(readingPlanData.data);
+    }
+  }, [readingPlanData]);
+  useEffect(() => {
     if (data?.data) {
       setBoookData(data?.data);
     }
@@ -68,6 +85,8 @@ export const BookDetails: FC = () => {
     }
   }, [isSuccess, navigate]);
 
+  console.log({ allReadingPlans });
+
   return (
     <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-2xl py-16 sm:py-24 lg:max-w-none lg:py-32">
@@ -75,8 +94,27 @@ export const BookDetails: FC = () => {
           <h2 className="text-2xl font-bold text-gray-900">Book Details</h2>
           <div className="flex">
             <Tooltip title={'Add to Reading List'}>
-              <Button onClick={handleAddToReadingList} variant="ghost">
-                <CheckCheckIcon size="25" />
+              <Button
+                onClick={handleAddToReadingList}
+                variant="ghost"
+                disabled={
+                  allReadingPlans?.books?.find(
+                    (plan) => plan.book._id === bookData?._id
+                  )
+                    ? true
+                    : false
+                }
+              >
+                <BookMarked
+                  color={
+                    allReadingPlans?.books?.find(
+                      (plan) => plan.book._id === bookData?._id
+                    )
+                      ? 'green'
+                      : 'black'
+                  }
+                  size="25"
+                />
               </Button>
             </Tooltip>
             <Tooltip
