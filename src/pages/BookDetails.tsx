@@ -151,7 +151,7 @@ export const BookDetails: FC = () => {
                 onClick={() => {
                   navigate(`/book/edit/${bookData?._id}`);
                 }}
-                className="flex mx-2 justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                className="flex mx-2 disabled:bg-blue-200 disabled:cursor-not-allowed justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Edit
               </button>
