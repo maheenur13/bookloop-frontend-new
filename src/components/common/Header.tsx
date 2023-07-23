@@ -3,6 +3,7 @@ import { removeUser } from '@/redux/features/user/user.slice';
 import { useAppDispatch, useAppSelector } from '@/redux/hook';
 import { FC } from 'react';
 import { Link } from 'react-router-dom';
+import ReadingList from '../ReadingList';
 import WishList from '../WishList';
 
 export const Header: FC = () => {
@@ -32,11 +33,15 @@ export const Header: FC = () => {
               <li className="p-3">
                 <Link to="/all-books">Books</Link>
               </li>
-              <li className="p-3">
-                <WishList />
-              </li>
+
               {email && (
                 <>
+                  <li className="p-3">
+                    <WishList />
+                  </li>
+                  <li className="p-3">
+                    <ReadingList />
+                  </li>
                   <li className="p-3">
                     <Link
                       to="/add-book"
