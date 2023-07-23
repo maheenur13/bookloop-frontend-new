@@ -90,74 +90,78 @@ export const BookDetails: FC = () => {
       <div className="mx-auto max-w-2xl py-16 sm:py-24 lg:max-w-none lg:py-32">
         <div className="flex justify-between">
           <h2 className="text-2xl font-bold text-gray-900">Book Details</h2>
-          <div className="flex">
-            <Tooltip title={'Add to Reading List'}>
-              <Button
-                onClick={handleAddToReadingList}
-                variant="ghost"
-                disabled={
-                  allReadingPlans?.books?.find(
-                    (plan) => plan.book._id === bookData?._id
-                  )
-                    ? true
-                    : false
-                }
-              >
-                <BookMarked
-                  color={
+          {email && (
+            <div className="flex">
+              <Tooltip title={'Add to Reading List'}>
+                <Button
+                  onClick={handleAddToReadingList}
+                  variant="ghost"
+                  disabled={
                     allReadingPlans?.books?.find(
                       (plan) => plan.book._id === bookData?._id
                     )
-                      ? 'green'
-                      : 'black'
+                      ? true
+                      : false
                   }
-                  size="25"
-                />
-              </Button>
-            </Tooltip>
-            <Tooltip
-              title={
-                !allWishList?.find((book: IBook) => book?._id === bookData?._id)
-                  ? 'Add to Wish List'
-                  : 'Remove From Wish List'
-              }
-            >
-              <Button onClick={handleAddToWishList} variant="ghost">
-                <Heart
-                  size="25"
-                  fill={
-                    allWishList?.find(
-                      (book: IBook) => book?._id === bookData?._id
-                    )
-                      ? 'red'
-                      : 'white'
-                  }
-                  color={
-                    allWishList?.find(
-                      (book: IBook) => book?._id === bookData?._id
-                    )
-                      ? 'red'
-                      : 'black'
-                  }
-                />
-              </Button>
-            </Tooltip>
+                >
+                  <BookMarked
+                    color={
+                      allReadingPlans?.books?.find(
+                        (plan) => plan.book._id === bookData?._id
+                      )
+                        ? 'green'
+                        : 'black'
+                    }
+                    size="25"
+                  />
+                </Button>
+              </Tooltip>
+              <Tooltip
+                title={
+                  !allWishList?.find(
+                    (book: IBook) => book?._id === bookData?._id
+                  )
+                    ? 'Add to Wish List'
+                    : 'Remove From Wish List'
+                }
+              >
+                <Button onClick={handleAddToWishList} variant="ghost">
+                  <Heart
+                    size="25"
+                    fill={
+                      allWishList?.find(
+                        (book: IBook) => book?._id === bookData?._id
+                      )
+                        ? 'red'
+                        : 'white'
+                    }
+                    color={
+                      allWishList?.find(
+                        (book: IBook) => book?._id === bookData?._id
+                      )
+                        ? 'red'
+                        : 'black'
+                    }
+                  />
+                </Button>
+              </Tooltip>
 
-            <Link
-              to={`/book/edit/${bookData?._id}`}
-              className="flex mx-2 justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              Edit
-            </Link>
+              <Link
+                to={`/book/edit/${bookData?._id}`}
+                className="flex mx-2 justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                Edit
+              </Link>
 
-            <button
-              onClick={handleAlertShow}
-              disabled={bookData?.uploadedBy?.email !== email}
-              className="flex mx-2 justify-center rounded-md bg-red-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-400 disabled:bg-slate-300 disabled:cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              Delete
-            </button>
-          </div>
+              <button
+                onClick={handleAlertShow}
+                disabled={bookData?.uploadedBy?.email !== email}
+                className="flex mx-2 justify-center rounded-md bg-red-500 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-400 disabled:bg-slate-300 disabled:cursor-not-allowed focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+              >
+                Delete
+              </button>
+            </div>
+          )}
         </div>
         {isAlertShow && (
           <div className="bg-slate-200 border border-slate-300 p-2 w-36 ms-auto my-2 flex justify-between">
