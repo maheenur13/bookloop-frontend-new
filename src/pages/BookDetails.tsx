@@ -20,7 +20,7 @@ import { useAppSelector } from '@/redux/hook';
 import { Tooltip } from 'antd';
 import { BookMarked, Heart } from 'lucide-react';
 import { FC, useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 export const BookDetails: FC = () => {
   const navigate = useNavigate();
@@ -146,12 +146,15 @@ export const BookDetails: FC = () => {
                 </Button>
               </Tooltip>
 
-              <Link
-                to={`/book/edit/${bookData?._id}`}
+              <button
+                disabled={bookData?.uploadedBy?.email !== email}
+                onClick={() => {
+                  navigate(`/book/edit/${bookData?._id}`);
+                }}
                 className="flex mx-2 justify-center rounded-md bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-red-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
               >
                 Edit
-              </Link>
+              </button>
 
               <button
                 onClick={handleAlertShow}
