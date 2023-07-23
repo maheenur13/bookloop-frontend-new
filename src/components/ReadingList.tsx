@@ -55,36 +55,39 @@ export default function ReadingList() {
           {/* <h1>Total: {wishList.length}</h1> */}
         </SheetHeader>
         <div className="space-y-5 mt-4">
-          {allReadingPlans?.books?.map((plan, idx) => (
-            <div
-              className="border  p-5 flex justify-between rounded-md"
-              key={idx}
-            >
-              <div>
-                <div className="px-2 w-full flex flex-col gap-3 text-sm">
-                  <p>Title: {plan.book.title}</p>
+          {allReadingPlans?.books &&
+            allReadingPlans?.books?.map((plan, idx) => (
+              <div
+                className="border  p-5 flex justify-between rounded-md"
+                key={idx}
+              >
+                <div>
+                  <div className="px-2 w-full flex flex-col gap-3 text-sm">
+                    <p>Title: {plan.book.title}</p>
+                  </div>
+                  <div className="px-2 w-full flex flex-col gap-3 text-sm">
+                    <p>Author: {plan.book.author}</p>
+                  </div>
                 </div>
-                <div className="px-2 w-full flex flex-col gap-3 text-sm">
-                  <p>Author: {plan.book.author}</p>
+                <div>
+                  {plan.status === 'in-complete' && (
+                    <Button
+                      onClick={() => handleUpdateStatus(plan.book._id)}
+                      variant="ghost"
+                      className="text-green-500"
+                    >
+                      Mark as complete
+                    </Button>
+                  )}
+                  {plan.status === 'complete' && (
+                    <CheckCheckIcon color="green" size={25} />
+                  )}
                 </div>
               </div>
-              <div>
-                {plan.status === 'in-complete' && (
-                  <Button
-                    onClick={() => handleUpdateStatus(plan.book._id)}
-                    variant="ghost"
-                    className="text-green-500"
-                  >
-                    Mark as complete
-                  </Button>
-                )}
-                {plan.status === 'complete' && (
-                  <CheckCheckIcon color="green" size={25} />
-                )}
-              </div>
-            </div>
-          ))}
-          {allReadingPlans?.books?.length === 0 && <p>Plan empty!</p>}
+            ))}
+          {allReadingPlans?.books && allReadingPlans?.books?.length < 1 && (
+            <p>Plan empty!</p>
+          )}
         </div>
       </SheetContent>
     </Sheet>
