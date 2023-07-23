@@ -11,8 +11,6 @@ export default function PrivateRoute({ children }: IProps) {
 
   const location = useLocation();
 
-  console.log({ location });
-
   return !isLoggedIn ? (
     <Navigate to="/login" state={{ from: location }} />
   ) : (

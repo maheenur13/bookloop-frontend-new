@@ -47,8 +47,6 @@ const Books: FC<PropsType> = ({ dataShow, page }) => {
     setQueryItems((prevState) => ({ ...prevState, genre: e ? e : '' }));
   };
   const handleYearChange = (e: any) => {
-    console.log(e);
-
     setQueryItems((prevState) => ({
       ...prevState,
       publicationYear: String(e ? e : ''),
@@ -79,7 +77,6 @@ const Books: FC<PropsType> = ({ dataShow, page }) => {
       refetch();
     }
   }, [query]);
-  console.log({ query });
 
   useEffect(() => {
     if (data?.data) {

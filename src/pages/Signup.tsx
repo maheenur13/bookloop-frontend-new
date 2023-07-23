@@ -13,7 +13,7 @@ type ISignUpUser = {
 export default function Signup() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { accessToken } = useAppSelector(state => state.auth);
+  const { accessToken } = useAppSelector((state) => state.auth);
   const [signUp, { isSuccess, isError, error }] = useSignUpMutation();
 
   const fromLocation: To = location.state?.from?.pathname || '/';
@@ -25,7 +25,6 @@ export default function Signup() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
-    console.log(userData);
     try {
       await signUp(userData);
     } catch (error) {
@@ -60,7 +59,7 @@ export default function Signup() {
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form
             className="space-y-6"
-            onSubmit={e => {
+            onSubmit={(e) => {
               void handleSubmit(e);
             }}
           >
@@ -74,7 +73,7 @@ export default function Signup() {
               <div className="mt-2">
                 <input
                   onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                    setUserData(prevState => ({
+                    setUserData((prevState) => ({
                       ...prevState,
                       email: e.target.value,
                     }));
@@ -101,7 +100,7 @@ export default function Signup() {
               <div className="mt-2">
                 <input
                   onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                    setUserData(prevState => ({
+                    setUserData((prevState) => ({
                       ...prevState,
                       password: e.target.value,
                     }));
