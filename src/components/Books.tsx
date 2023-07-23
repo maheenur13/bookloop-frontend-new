@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useDebounce } from '@/hooks/useDebounce';
 import { IBook } from '@/interfaces';
 import { useGetBooksQuery } from '@/redux/features/book/book.api';
@@ -62,7 +63,7 @@ const Books: FC<PropsType> = ({ dataShow, page }) => {
 
   const generateQueryString = (queryItems: IQueryType) => {
     const queryArray = Object.entries(queryItems)
-      .filter(([key, value]) => value.length > 0) // Filter out empty values
+      .filter(([, value]) => value.length > 0) // Filter out empty values
       .map(([key, value]) => `${key}=${encodeURIComponent(value)}`); // Encode values to handle special characters
 
     setQuery('?' + queryArray.join('&'));
